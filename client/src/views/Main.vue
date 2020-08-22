@@ -1,18 +1,20 @@
 <template>
   <div class=main>
-    <Retro></Retro>
-    <button v-if=user class="btn btn-danger" @click="logOut()">Log out</button>
+    <!-- <Retro></Retro> -->
+
+    <ListRetros></ListRetros>
+    <button v-if="user" class="btn btn-danger" @click="logOut()">Log out</button>
   </div>
 </template>
 
 <script>
 import { useState, useActions, useRouter } from '@u3u/vue-hooks';
 import { watch } from '@vue/composition-api';
-import Retro from '../components/Retro';
+import ListRetros from '../components/ListRetros';
 
 export default {
-  components: {
-    Retro
+  components: { 
+    ListRetros
   },
 
   setup() {
@@ -20,8 +22,13 @@ export default {
       'logOut'
     ]);
 
+    const { user } = useState('auth', [
+      'user'
+    ])
+
     return { 
-      logOut
+      logOut,
+      user
     };
   }
 
@@ -36,8 +43,9 @@ export default {
   background: $bg_dark;
   color: $primary;
   display: flex;
-  justify-content: center;
+  //justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin-top: 5vh;
 }
 </style>

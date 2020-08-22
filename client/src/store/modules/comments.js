@@ -13,17 +13,30 @@ export default {
         comment_stop: [],
         comment_continue: []
     },
+    mutations: { 
+        SET_RETRO({state}, value) {
+            state.retro = value;
+        }
+    },
     actions: { 
         async create(_, comment) {
             await feathers.service('comments').create(comment);
         },
 
         async listen({ state }) {
+
+            console.log("CALLED!", state.retro);
+
+            if(!state.retro) return;
+            
             const comments = await feathers.service('comments').find({
                 query: { 
+                    retro_id: state.retro._id,
                     $sort: { createdAt: 1 }
                 }
             });
+
+            console.log("Comments", comments.data);
 
             state.all_comments = comments.data;
             state.comment_start = state.all_comments.filter(comment => comment.action === 1)
@@ -38,6 +51,16 @@ export default {
                 state.comment_continue = state.all_comments.filter(comment => comment.action === 3)
             };
             feathers.service('comments').on('created', listener);   
+        },
+
+        async setRetro({state, commit}, retro_id) {
+            const retro = await feathers.service('retros').find({
+                _id: retro_id
+            });
+
+            state.retro = retro.data;
+
+            console.log("DEFINED!", state.retro);
         }
     }
 }

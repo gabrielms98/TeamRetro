@@ -22,7 +22,7 @@ export default {
     
     const { user } = useState('auth', [
       'user'
-    ])
+    ]);
 
     reAuth();
 

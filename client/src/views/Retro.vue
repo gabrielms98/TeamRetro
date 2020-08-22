@@ -57,7 +57,9 @@ import { useState, useActions, useRouter } from '@u3u/vue-hooks';
 export default {
 
     setup() {
-        const router = useRouter();
+        const { router, route } = useRouter();
+
+        const { retro_id } = route.value.query;
 
         const commentStart = ref('');
         const commentStop = ref('');
@@ -73,15 +75,16 @@ export default {
             'comment_continue'
         ]);
 
-        const { create, listen } = useActions('comments', [
+        const { create, listen, setRetro } = useActions('comments', [
             'create',
-            'listen'
+            'listen',
+            'setRetro'
         ]);
 
         const sendComment = (action, comment) => {
             create({
                 text: comment,
-                retro_id: '5f40a4508d4c58e0a994f8db',
+                retro_id: retro_id,
                 action: action,
                 user_id: user._id
             });
@@ -96,7 +99,8 @@ export default {
             }
         })
 
-        listen();
+        setRetro(retro_id).then(() => listen());
+
 
         return { 
             sendComment,
@@ -123,8 +127,8 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-top: 10vh;
 
+  padding-top: 10vh;
 
     &__stop {
         color: $danger;
