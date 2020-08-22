@@ -15,12 +15,15 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import { useState, useActions } from '@u3u/vue-hooks';
+import { useState, useActions, useRouter } from '@u3u/vue-hooks';
+import { watch } from '@vue/composition-api';
 
 export default {
   name: 'Home',
   setup() {
+
+    const { router } = useRouter();
+
     const { user, loading } = useState('auth', [
       'user',
       'loading'
@@ -30,6 +33,13 @@ export default {
       'loginWithGithub',
       'logOut'
     ]);
+
+    watch(user, () => {
+      if(user.value) {
+        console.log('user!', user.value);
+        router.push('/main');
+      }
+    });
 
     return { 
       user,
