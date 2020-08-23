@@ -24,9 +24,30 @@
                     <button class="btn" @click="router.push({path: 'retro', query: {retro_id: retro._id}})" v-if="isMemberOfRetro(retro)">
                         <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                     </button>
-                    <button class="btn" v-else>
+                    <button class="btn" @click="currentRetro = retro;" data-toggle="modal" data-target="#pwdModal" v-else>
                         JOIN
                     </button>
+
+                    <div class="modal fade" tabindex="-1" id="pwdModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Digite a senha da retro!</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <label for="nameRetro">Senha</label>
+                                <input type="password" class="form-control" id="nameRetro" v-model="pwd">
+                                <small class="form-text text-muted">Digite a senha da retro para entrar! </small>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" @click="join(currentRetro)" class="btn btn-primary">Join</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
               </div>
           </div>
         </div>
@@ -38,7 +59,7 @@
 import Loading from './Loading';
 import SearchBar from './SearchBar';
 import { useState, useActions, useRouter } from '@u3u/vue-hooks';
-import { watch } from '@vue/composition-api';
+import { watch, ref } from '@vue/composition-api';
 export default {
     components: {
         Loading,
@@ -46,6 +67,11 @@ export default {
     },
 
     setup() {
+
+        const bcrypt = require('bcryptjs');
+
+        let currentRetro = ref('');
+        let pwd = ref('');
 
         const { router } = useRouter();
 
@@ -66,17 +92,44 @@ export default {
             'loading'
         ]);
 
-        const { get } = useActions('retros', [
-            'get'
+        const { get, joinRetro } = useActions('retros', [
+            'get',
+            'joinRetro'
         ]);
 
         function parse(string) {
-            const { value } = JSON.parse(string);
-            return value && value.name;
+            const { name } = JSON.parse(string);
+            return name ? name : "";
         }
 
         function isMemberOfRetro(retro) {
-            return retro.participants && retro.participants.length && retro.participants.some(participant => JSON.parse(participant).value._id === user.value._id);
+            return retro.participants && retro.participants.length && retro.participants.some(participant => JSON.parse(participant)._id === user.value._id );
+        }
+
+        function getRetro(id) {
+            retros.value.forEach(retro => {
+                if(retro._id === id) return retro;
+            });
+            return null;
+        }
+
+        function join(retro) {
+
+            console.log("retro1", retro._id);
+
+            if(retro) {
+                const result = bcrypt.compareSync(pwd.value, retro.password); 
+
+                if(result) {
+                    try {
+                        joinRetro({user: user.value, retro});
+
+                        router.push({path: 'retro', query: {retro_id: retro._id}})
+                    } catch (err) {
+                        console.err(err.toString());
+                    }
+                }
+            }
         }
 
         get();
@@ -91,7 +144,11 @@ export default {
             getUser,
             parse,
             isMemberOfRetro,
-            user
+            user,
+            currentRetro,
+            pwd,
+            getRetro,
+            join
         };
 
     }

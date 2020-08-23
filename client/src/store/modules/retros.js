@@ -27,6 +27,11 @@ export default {
 
         async create(_, retro) {
             await feathers.service('retros').create(retro);
+        },
+
+        async joinRetro({state}, { user, retro} ) {
+            retro.participants.push(JSON.stringify(user));
+            await feathers.service('retros').update(retro._id,retro);
         }
     }
 }

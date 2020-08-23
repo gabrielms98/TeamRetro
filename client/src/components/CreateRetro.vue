@@ -54,11 +54,12 @@ export default {
                 this.fail = true;
                 return;
             }
+
             create({
                 name: inputName.value,
                 admin: JSON.stringify(user),
                 participants: [],
-                password: bcrypt.hashSync(inputName.value)
+                password: bcrypt.hashSync(inputPwd.value)
             });
             router.push("/main");
             this.success = true;
