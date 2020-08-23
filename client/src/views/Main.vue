@@ -1,7 +1,5 @@
 <template>
   <div class=main>
-    <!-- <Retro></Retro> -->
-
     <ListRetros></ListRetros>
     <button v-if="user" class="btn btn-danger" @click="logOut()">Log out</button>
   </div>
@@ -18,13 +16,16 @@ export default {
   },
 
   setup() {
-    const { logOut } = useActions('auth', [
-      'logOut'
+    const { router } = useRouter();
+    
+    const { logOut, isLoggedIn } = useActions('auth', [
+      'logOut',
+      'isLoggedIn'
     ]);
 
     const { user } = useState('auth', [
       'user'
-    ])
+    ]); 
 
     return { 
       logOut,

@@ -19,6 +19,14 @@ export default {
 
             state.retros = retros.data;
             state.loading = false;
+        },
+
+        isOnRetro(retro, user_id) {
+            return retro.participants.some(p => p === user_id);
+        },
+
+        async create(_, retro) {
+            await feathers.service('retros').create(retro);
         }
     }
 }

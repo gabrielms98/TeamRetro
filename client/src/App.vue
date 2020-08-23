@@ -6,7 +6,8 @@
 </template>
 
 <script>
-import { useActions, useState } from '@u3u/vue-hooks';
+import { useActions, useState, useRouter } from '@u3u/vue-hooks';
+import { watch } from '@vue/composition-api';
 import Navbar from '@/components/Navbar.vue'
 
 export default {
@@ -16,6 +17,8 @@ export default {
   },
 
   setup() {
+    const { router } = useRouter();
+
     const { reAuth } = useActions('auth', [
       'reAuth'
     ]);
@@ -25,6 +28,14 @@ export default {
     ]);
 
     reAuth();
+
+    watch(user, () => {
+      if(user.value) {
+        router.push('/main');
+      } else {
+        router.push('/');
+      }
+    });
 
     return { 
       user

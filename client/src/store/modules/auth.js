@@ -42,6 +42,15 @@ export  default {
         async logOut({ state }) {
             await feathers.logout();
             state.user = null;
+        },
+        idLoggedIn() {
+            return !!user;
+        },
+        async getUser({ state }, user_id) {
+            state.loading = true;
+            const resp = await feathers.service('users').get(user_id);
+            state.loading = false;
+            return resp.data;
         }
     }
 }
