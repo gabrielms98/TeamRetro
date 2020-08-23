@@ -44,6 +44,6 @@
       }
     }
   },
-  "mongodb": "mongodb+srv://admin:J00Q43pjAQ9JCzB8@cluster0-uvjq6.mongodb.net/TeamRetro?retryWrites=true&w=majority",
-  "mongodb.local": "mongodb://localhost:27017/team_retro"
+  "mongodb.remote": "mongodb+srv://admin:J00Q43pjAQ9JCzB8@cluster0-uvjq6.mongodb.net/TeamRetro?retryWrites=true&w=majority",
+  "mongodb": "mongodb://localhost:27017/team_retro"
 }

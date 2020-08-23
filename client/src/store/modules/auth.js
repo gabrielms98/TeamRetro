@@ -20,10 +20,13 @@ export  default {
         },
         loginWithGithub({ state }) {
             state.loading = true;
+            console.log("OI");
             async function receiveMessage(event) {
+                console.log("OLAAA", event.origin, event.data.token);
 
                 if(event.origin !== 'http://localhost:3030') return;
 
+                console.log("KAJSDHASH");
                 const { user } = await feathers.authenticate({
                     strategy: 'jwt',
                     accessToken: event.data.token

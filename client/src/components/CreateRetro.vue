@@ -8,9 +8,15 @@
             <label for="nameRetro">Nome</label>
             <input type="text" class="form-control" id="nameRetro" aria-describedby="emailHelp" v-model="inputName">
             <small id="emailHelp" class="form-text text-muted">Defina qual será o nome dessa retro!</small>
+
+            <br>
+
+            <label for="nameRetro">Senha</label>
+            <input type="password" class="form-control" id="nameRetro" aria-describedby="emailHelp" v-model="inputPwd">
+            <small id="emailHelp" class="form-text text-muted">Qual será a senha!</small>
         </div>
 
-        <button class="btn btn-primary" :disabled="!inputName" @click="addRetro()">Enviar</button>
+        <button class="btn btn-primary" :disabled="!inputName || !inputPwd" @click="addRetro()">Enviar</button>
     </div>
 </template>
 
@@ -21,8 +27,11 @@ import { useState, useActions, useRouter } from '@u3u/vue-hooks';
 export default {
     setup() {
         let inputName = ref('');
+        let inputPwd = ref('');
         let success = false;
         let fail = false;
+
+        const bcrypt = require('bcryptjs');
 
         const { router } = useRouter();
 
@@ -47,8 +56,9 @@ export default {
             }
             create({
                 name: inputName.value,
-                admin: user._id,
-                participants: []
+                admin: JSON.stringify(user),
+                participants: [],
+                password: bcrypt.hashSync(inputName.value)
             });
             router.push("/main");
             this.success = true;
@@ -58,7 +68,8 @@ export default {
             inputName,
             addRetro,
             success,
-            fail
+            fail,
+            inputPwd
         };
     }
 }

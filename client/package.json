@@ -11,6 +11,7 @@
     "@feathersjs/socketio-client": "^4.5.8",
     "@u3u/vue-hooks": "^2.0.1",
     "@vue/composition-api": "^1.0.0-beta.10",
+    "bcryptjs": "^2.4.3",
     "core-js": "^3.6.5",
     "feathers-hooks-common": "^5.0.3",
     "socket.io-client": "^2.3.0",

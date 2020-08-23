@@ -1,15 +1,10 @@
 <template>
   <div class="list-retros mt-5">
-    <div class="d-flex align-items-center p-3 my-3 text-white-50 rounded box-shadow list-header">
-        <img class="mr-3" src="../assets/sydle-logo-removebg-preview.png" alt="" width="58" height="58">
-        <div class="lh-100">
-            <h6 class="mb-0 text-white lh-100">SYDLE</h6>
-            <small>Since 2011</small>
-        </div>
-    </div>
+    
+    <SearchBar />
 
     <div class="text-center" v-if="loadingRetro">
-        <Loading></Loading>
+        <Loading />
     </div>
 
     <div class="my-3 p-3 bg-white rounded box-shadow" style="width: 75vw;" v-if="!loadingRetro">
@@ -21,14 +16,17 @@
                   <p class="media-body pb-3 mb-0 small lh-125 border-gray">
                         <strong class="d-block text-gray-dark">{{retro.name}}</strong>
                         <span v-for="user in retro.participants" v-bind:key="user">
-                            <p v-if="resp = userA(user, retro._id)">{{resp}}</p>
+                            {{parse(user)}}
                         </span>
                     </p>
               </div>
               <div class="col-sm-2 center-content mb-3">
-                  <button class="btn" @click="router.push({path: 'retro', query: {retro_id: retro._id}})">
-                      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                  </button>
+                    <button class="btn" @click="router.push({path: 'retro', query: {retro_id: retro._id}})" v-if="isMemberOfRetro(retro)">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </button>
+                    <button class="btn" v-else>
+                        JOIN
+                    </button>
               </div>
           </div>
         </div>
@@ -38,11 +36,13 @@
 
 <script>
 import Loading from './Loading';
+import SearchBar from './SearchBar';
 import { useState, useActions, useRouter } from '@u3u/vue-hooks';
 import { watch } from '@vue/composition-api';
 export default {
     components: {
-        Loading
+        Loading,
+        SearchBar
     },
 
     setup() {
@@ -57,6 +57,10 @@ export default {
             'loading'
         ]);
 
+        const { user } = useState('auth', [
+            'user'
+        ]);
+
         const { retros, loading: loadingRetro } = useState('retros', [
             'retros',
             'loading'
@@ -66,9 +70,13 @@ export default {
             'get'
         ]);
 
-        function userA(user_id, retro_id) {
-            const resp = getUser(user_id);
-            return resp && resp.name;
+        function parse(string) {
+            const { value } = JSON.parse(string);
+            return value && value.name;
+        }
+
+        function isMemberOfRetro(retro) {
+            return retro.participants && retro.participants.length && retro.participants.some(participant => JSON.parse(participant).value._id === user.value._id);
         }
 
         get();
@@ -81,7 +89,9 @@ export default {
             loadingRetro,
             router,
             getUser,
-            userA
+            parse,
+            isMemberOfRetro,
+            user
         };
 
     }
@@ -106,5 +116,10 @@ export default {
 
 .media .row {
     width: 100%;
+}
+
+.upperbar {
+    display: flex;
+    flex-direction: row;
 }
 </style>
