@@ -25,6 +25,7 @@ export default {
         }
 
         participants = getParticipants();
+        console.log(participants);
 
         return { 
             retro,

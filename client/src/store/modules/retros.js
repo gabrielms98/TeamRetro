@@ -6,6 +6,20 @@ export default {
     state: { 
         loading: false,
         retros: [],
+        page: [],
+        page_number: 1, 
+        pageCount: 0
+    },
+    getters: {
+        getPage(state) {
+            return state.retros.slice((state.page_number - 1) * 5, state.page_number * 5);
+        },
+        currentPage(state) {
+            return state.page_number;
+        },
+        pageCount(state) {
+            return state.pageCount;
+        }
     },
     actions: { 
         async get({ state }) {
@@ -16,7 +30,8 @@ export default {
                     $sort: { createdAt: 1}
                 }
             });
-
+            
+            state.pageCount = parseInt(retros.data.length / 5) + 1;
             state.retros = retros.data;
             state.loading = false;
         },
