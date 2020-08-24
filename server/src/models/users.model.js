@@ -13,6 +13,7 @@ module.exports = function (app) {
     name: { type: String },
     image: { type: String },
     github_username: { type: String },
+    active: { type: Boolean, default: false },
 
   }, {
     timestamps: true

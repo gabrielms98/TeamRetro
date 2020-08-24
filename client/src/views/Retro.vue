@@ -1,5 +1,15 @@
 <template>
   <div class="retro">
+
+      <div class="row justify-content-between">
+          <div class="col-4 w-100">
+            <ListParticipants />
+          </div>
+          <div class="col-4 w-100">
+            <ControlPanel class="w-100"/>
+          </div>
+      </div>
+
     <div class="row">
         <div class="col mr-3">
             <span class="retro__start">Start</span>
@@ -10,9 +20,9 @@
                 </div>
             </div>
 
-            <div class="row" v-for="comment in comment_start" :key="comment._id">
+            <div class="row" v-for="comment in comment_start" :key="comment._id" >
                 <div class="card text-white mb-2 comment bg-success">
-                    <p class="card-text p-2">{{comment.text}}</p>
+                    <p class="card-text p-2" v-bind:class="{'retro__start': show}">{{comment.text}}</p>
                 </div>
             </div>
 
@@ -28,7 +38,7 @@
 
             <div class="row" v-for="comment in comment_stop" :key="comment._id">
                 <div class="card text-white mb-2 comment bg-danger">
-                    <p class="card-text p-2">{{comment.text}}</p>
+                    <p class="card-text p-2" v-bind:class="{'retro__stop': show}">{{comment.text}}</p>
                 </div>
             </div>
         </div>
@@ -42,7 +52,7 @@
 
             <div class="row" v-for="comment in comment_continue" :key="comment._id">
                 <div class="card text-white mb-2 comment bg-warning">
-                    <p class="card-text p-2">{{comment.text}}</p>
+                    <p class="card-text p-2" v-bind:class="{'retro__continue': show}">{{comment.text}}</p>
                 </div>
             </div>
         </div>
@@ -54,7 +64,15 @@
 import { ref, watch } from '@vue/composition-api';
 import { useState, useActions, useRouter } from '@u3u/vue-hooks';
 
+import ListParticipants from '../components/ListParticipants';
+import ControlPanel from '../components/ControlPanel';
+
 export default {
+
+    components: {
+        ListParticipants,
+        ControlPanel
+    },
 
     setup() {
         const { router, route } = useRouter();
@@ -69,10 +87,11 @@ export default {
             'user'
         ]);
 
-        const { comment_start, comment_stop, comment_continue } = useState('comments', [
+        const { comment_start, comment_stop, comment_continue, show } = useState('comments', [
             'comment_start', 
             'comment_stop', 
-            'comment_continue'
+            'comment_continue',
+            'show'
         ]);
 
         const { create, listen, setRetro } = useActions('comments', [
@@ -99,6 +118,11 @@ export default {
             }
         })
 
+        watch(show, () => {
+
+            console.log("aoooooba");
+        })
+
         setRetro(retro_id).then(() => listen());
 
 
@@ -111,6 +135,7 @@ export default {
             comment_start,
             comment_stop,
             comment_continue,
+            show
         };
     }
 

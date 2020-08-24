@@ -11,7 +11,8 @@ export default {
         all_comments: [],
         comment_start: [],
         comment_stop: [],
-        comment_continue: []
+        comment_continue: [],
+        show: false
     },
     actions: { 
         async create(_, comment) {
@@ -49,9 +50,13 @@ export default {
                 _id: retro_id
             });
 
-            state.retro = retro.data;
+            state.retro = retro.data[0];
 
             console.log("DEFINED!", state.retro);
+        },
+
+        showComments({ state }, show ) {
+            state.show = show;
         }
     }
 }
