@@ -78,6 +78,7 @@ export default {
         const { router, route } = useRouter();
 
         const { retro_id } = route.value.query;
+        console.log("params", retro_id);
 
         const commentStart = ref('');
         const commentStop = ref('');
@@ -99,6 +100,8 @@ export default {
             'listen',
             'setRetro'
         ]);
+
+        setRetro(retro_id).then(() => listen());
 
         const sendComment = (action, comment) => {
             create({
@@ -122,9 +125,6 @@ export default {
 
             console.log("aoooooba");
         })
-
-        setRetro(retro_id).then(() => listen());
-
 
         return { 
             sendComment,

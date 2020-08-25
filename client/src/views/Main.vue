@@ -41,7 +41,7 @@ export default {
 .main {
   width: 100%;
   height: 100%;
-  background: $bg_dark;
+  background: $azul_camarada;
   color: $primary;
   display: flex;
   //justify-content: center;

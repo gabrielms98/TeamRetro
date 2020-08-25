@@ -54,13 +54,13 @@
     </div>
 
     <nav aria-label="...">
-        <ul class="pagination">
-            <li class="page-item disabled">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
                 <button class="page-link" href="#" tabindex="-1">Previous</button>
             </li>
-            <li class="page-item" v-for="i in pageCount" v-bind:key="i"><button class="page-link" href="#">{{i}}</button></li>
+            <li class="page-item" v-for="i in pageCount" v-bind:key="i"><button class="page-link" @click="goToPage(i)">{{i}}</button></li>
             <li class="page-item">
-                <button class="page-link" href="#">Next</button>
+                <button class="page-link">Next</button>
             </li>
         </ul>
     </nav>
@@ -111,9 +111,10 @@ export default {
             'loading'
         ]);
 
-        const { get, joinRetro } = useActions('retros', [
+        const { get, joinRetro, goToPage } = useActions('retros', [
             'get',
-            'joinRetro'
+            'joinRetro',
+            'goToPage'
         ]);
 
         const { getPage, currentPage, pageCount } = useGetters('retros', [
@@ -179,7 +180,8 @@ export default {
             page,
             loadingComponent,
             getPage,
-            pageCount
+            pageCount,
+            goToPage
         };
 
     }

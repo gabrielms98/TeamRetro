@@ -14,6 +14,11 @@ export default {
         comment_continue: [],
         show: false
     },
+    getters: { 
+        getParticipants(state) {
+            return state.retro.participants && state.retro.participants.length && state.retro.participants.map(r => JSON.parse(r));
+        }
+    },
     actions: { 
         async create(_, comment) {
             await feathers.service('comments').create(comment);
@@ -47,12 +52,16 @@ export default {
 
         async setRetro({state, commit}, retro_id) {
             const retro = await feathers.service('retros').find({
-                _id: retro_id
+                query: {
+                    _id: retro_id
+                }
             });
 
-            state.retro = retro.data[0];
-
-            console.log("DEFINED!", state.retro);
+            if(retro.total) {
+                state.retro = retro.data[0];
+            } else {
+                console.log("NAO FOI POSSÍVEL ACHAR RETRO COM ID: " + retro_id);
+            }
         },
 
         showComments({ state }, show ) {

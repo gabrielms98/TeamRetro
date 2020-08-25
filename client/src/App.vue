@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar v-if="user"></Navbar>
+    <Navbar v-if="user" class="shadow"></Navbar>
     <router-view/>
   </div>
 </template>

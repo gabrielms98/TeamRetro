@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { useState, useActions, useRouter } from '@u3u/vue-hooks';
+import { useState, useActions, useRouter, useGetters } from '@u3u/vue-hooks';
 export default {
 
     setup() {
@@ -18,14 +18,11 @@ export default {
             'retro'
         ]);
 
-        function getParticipants() {
-            if(retro.value && retro.value.participants) {
-                return retro.value.participants.map(p => JSON.parse(p));
-            }
-        }
+        const { getParticipants } = useGetters('comments', [
+            'getParticipants'
+        ]);
 
-        participants = getParticipants();
-        console.log(participants);
+        participants = getParticipants;
 
         return { 
             retro,
