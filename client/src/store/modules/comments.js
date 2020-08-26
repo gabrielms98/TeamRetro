@@ -2,6 +2,7 @@ import feathers from '../../feathers.js';
 import Vue from 'vue';
 
 let listener;
+let listenerRetro;
 
 export default {
     namespaced: true,
@@ -43,6 +44,9 @@ export default {
         },  
         show(state) {
             return state.show;
+        },
+        retro(state) {
+            return state.retro;
         }
     },
     actions: { 
@@ -68,12 +72,25 @@ export default {
             
             feathers.service('comments').off('created', listener);
             listener = (comment) => {
+                console.log("NOVO COMENTARIO!");
+                if(state.all_comments.some(c => c._id === comment._id)) return;
                 state.all_comments.push(comment);
                 state.comment_start = state.all_comments.filter(comment => comment.action === 1)
                 state.comment_stop = state.all_comments.filter(comment => comment.action === 2)
                 state.comment_continue = state.all_comments.filter(comment => comment.action === 3)
             };
             feathers.service('comments').on('created', listener);   
+        },
+
+        listenerRetroUpdate({state}) {
+
+            feathers.service('retros').off('updated', listenerRetro);
+            listenerRetro = (retro) => {
+                console.log("Retro Updated!");
+                state.retro = retro;
+            }
+            feathers.service('retros').on('updated', listenerRetro);
+
         },
 
         listenUserUpdate({state, commit}) {
@@ -102,8 +119,12 @@ export default {
             }
         },
 
-        showComments({ state }, show ) {
+        async showComments({ state }, show ) {
+            console.log("CALLED show comments", show);
             state.show = show;
+            let aux = state.retro;
+            aux.show = show;
+            await feathers.service('retros').update(aux._id, aux);
         }
 
     }

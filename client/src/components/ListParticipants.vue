@@ -1,8 +1,8 @@
 <template>
   <div class="list-participans mb-3">
-        <div v-for="(participant, index) in getParticipants" :id="`getParticipants${participant._id}`" v-bind:key="participant._id">
+        <span v-for="(participant, index) in getParticipants" :id="`getParticipants${participant._id}`" v-bind:key="participant._id">
             <img :src="participant.image" alt="Profile pic" class="rounded p-0 shadow mr-2" style="width: 40px;" v-bind:class="{'active': getParticipants[index].active, 'away': !getParticipants[index].active}">
-        </div>
+        </span>
   </div>
 </template>
 
@@ -46,25 +46,37 @@ export default {
         listenUserUpdate();
 
         const ifvisible = require('ifvisible.js');
-        ifvisible.setIdleDuration(10);
+        ifvisible.setIdleDuration(15);
+
+        if(ifvisible.now()) {
+            if(!user.value.active) {
+                let aux = user.value;
+                aux.active = true;
+                updateUser(aux);
+            }
+        } else {
+            if(user.value.active) {
+                let aux = user.value;
+                aux.active = false;
+                updateUser(aux);
+            }
+        }
 
         setInterval(() => {
             if(ifvisible.now()) {
                 if(!user.value.active) {
-                    console.log("TRUE");
                     let aux = user.value;
                     aux.active = true;
                     updateUser(aux);
                 }
             } else {
                 if(user.value.active) {
-                    console.log("FALSE");
                     let aux = user.value;
                     aux.active = false;
                     updateUser(aux);
                 }
             }
-        }, 10000);
+        }, 0.25 * 60 * 1000);
 
         return { 
             retro,

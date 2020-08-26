@@ -125,13 +125,6 @@ export default {
             return retro.participants && retro.participants.length && retro.participants.some(participant => JSON.parse(participant)._id === user.value._id );
         }
 
-        function getRetro(id) {
-            retros.value.forEach(retro => {
-                if(retro._id === id) return retro;
-            });
-            return null;
-        }
-
         function join(retro) {
 
             console.log("retro1", retro._id);
@@ -166,7 +159,6 @@ export default {
             user,
             currentRetro,
             pwd,
-            getRetro,
             join,
             page,
             loadingComponent,

@@ -23,7 +23,7 @@
             <transition-group name="slide">
                 <div class="row" v-for="comment in comment_start" :key="comment._id" >
                     <div class="card text-white mb-2 comment bg-success">
-                        <p class="card-text p-2" v-bind:class="{'retro__start': show}">{{comment.text}}</p>
+                        <p class="card-text p-2" v-bind:class="{'retro__start': retro.show}">{{comment.text}}</p>
                     </div>
                 </div>
             </transition-group>
@@ -41,7 +41,7 @@
             <transition-group name="slide">
                 <div class="row" v-for="comment in comment_stop" :key="comment._id">
                     <div class="card text-white mb-2 comment bg-danger">
-                        <p class="card-text p-2" v-bind:class="{'retro__stop': show}">{{comment.text}}</p>
+                        <p class="card-text p-2" v-bind:class="{'retro__stop': retro.show}">{{comment.text}}</p>
                     </div>
                 </div>
             </transition-group>
@@ -57,7 +57,7 @@
             <transition-group name="slide">
                 <div class="row" v-for="comment in comment_continue" :key="comment._id">
                     <div class="card text-white mb-2 comment bg-warning">
-                        <p class="card-text p-2" v-bind:class="{'retro__continue': show}">{{comment.text}}</p>
+                        <p class="card-text p-2" v-bind:class="{'retro__continue': retro.show}">{{comment.text}}</p>
                     </div>
                 </div>
             </transition-group>
@@ -68,7 +68,7 @@
 
 <script>
 import { ref, watch } from '@vue/composition-api';
-import { useState, useActions, useRouter } from '@u3u/vue-hooks';
+import { useState, useActions, useRouter, useGetters } from '@u3u/vue-hooks';
 
 import ListParticipants from '../components/ListParticipants';
 import ControlPanel from '../components/ControlPanel';
@@ -94,6 +94,10 @@ export default {
             'user'
         ]);
 
+        const { retro } = useGetters('comments', [
+            'retro'
+        ]);
+
         const { comment_start, comment_stop, comment_continue, show } = useState('comments', [
             'comment_start', 
             'comment_stop', 
@@ -101,13 +105,15 @@ export default {
             'show'
         ]);
 
-        const { create, listen, setRetro } = useActions('comments', [
+        const { create, listen, setRetro, listenerRetroUpdate } = useActions('comments', [
             'create',
             'listen',
-            'setRetro'
+            'setRetro',
+            'listenerRetroUpdate'
         ]);
 
         setRetro(retro_id).then(() => listen());
+        listenerRetroUpdate();
 
         const sendComment = (action, comment) => {
             create({
@@ -141,7 +147,8 @@ export default {
             comment_start,
             comment_stop,
             comment_continue,
-            show
+            show,
+            retro
         };
     }
 

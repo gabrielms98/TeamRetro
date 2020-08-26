@@ -10,7 +10,8 @@ module.exports = function (app) {
     name: { type: String, required: true },
     admin: {type: String, ref: 'users', required: true},
     participants: [{type: String, ref: 'users'}],
-    password: {type: String, required: true}
+    password: {type: String, required: true},
+    show: {type: Boolean, default: true}
   }, {
     timestamps: true
   });
