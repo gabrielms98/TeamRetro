@@ -30,13 +30,10 @@ export  default {
         },
         loginWithGithub({ state }) {
             state.loading = true;
-            console.log("OI");
             async function receiveMessage(event) {
-                console.log("OLAAA", event.origin, event.data.token);
 
                 if(event.origin !== 'http://localhost:3030') return;
 
-                console.log("KAJSDHASH");
                 const { user } = await feathers.authenticate({
                     strategy: 'jwt',
                     accessToken: event.data.token
@@ -56,28 +53,9 @@ export  default {
             await feathers.logout();
             state.user = null;
         },
-        idLoggedIn() {
-            return !!user;
-        },
-        async getUser({ state }, user_id) {
-            state.loading = true;
-            const resp = await feathers.service('users').get(user_id);
-            state.loading = false;
-            return resp.data;
-        },
-        async setUserActive({state}, active) {
-            state.user.active = active;
-            await feathers.service('users').update(state.user._id, state.user);
-        },
-        async listen({getters}, id) {
-            feathers.service('users').off('updated', listener);
 
-            listener = (users) => {
-                console.log(users.active);
-                if(users._id === id); //return getters.isActive(users._id);
-            }
-
-            feathers.service('users').on('updated', listener);
+        async updateUser(_, user) {
+            await feathers.service('users').update(user._id, user);
         }
     }
 }

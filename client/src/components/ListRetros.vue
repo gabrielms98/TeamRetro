@@ -95,14 +95,6 @@ export default {
 
         const { router } = useRouter();
 
-        const { getUser } = useActions('auth', [
-            'getUser'
-        ]);
-
-        const { loading: loadingUser } = useState('auth', [
-            'loading'
-        ]);
-
         const { user } = useState('auth', [
             'user'
         ]);
@@ -167,10 +159,8 @@ export default {
 
         return { 
             retros,
-            loadingUser,
             loadingRetro,
             router,
-            getUser,
             parse,
             isMemberOfRetro,
             user,

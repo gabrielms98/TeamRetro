@@ -1,4 +1,5 @@
 import feathers from '../../feathers.js';
+import Vue from 'vue';
 
 let listener;
 
@@ -16,28 +17,32 @@ export default {
         participants: []
     },
     mutations: {
-        participantes: (state, user) => {
+        updateParticipantActive: (state, user) => {
+            console.log("mutation!");
             if(state.participants) {
                 state.participants.forEach((p, i) => {
-                    if(p._id === user._id) state.participants[i] = user;
+                    if(p._id === user._id) {
+                        Vue.set(state.participants, i, user);
+                    }
                 });
             }
         }
     },
     getters: { 
         isParticipantActive: (state) => (user) => {
-            state.retro.participants.forEach((p, i) => {
-                p = JSON.parse(p);
-                if(p._id === user.id) {
-                    p.active = user.active;
-                    state.retro.participants[i] = JSON.stringify(p);
-
+            console.log("Called!");
+            state.participants.forEach((p, i) => {
+                if(p._id === user._id) {
                     return user.active;
                 }
-            })
+            });
+            return false;
         },
         getParticipants(state) {
             return state.participants && state.participants.length ? state.participants : [];
+        },  
+        show(state) {
+            return state.show;
         }
     },
     actions: { 
@@ -75,7 +80,8 @@ export default {
 
             feathers.service('users').off('updated', listener);
             listener = (user) => {
-                commit('participants', user);
+                console.log("updated!");
+                commit('updateParticipantActive', user);
             }
             feathers.service('users').on('updated', listener);
 
@@ -99,5 +105,6 @@ export default {
         showComments({ state }, show ) {
             state.show = show;
         }
+
     }
 }
