@@ -38,11 +38,13 @@
                 </div>
             </div>
 
-            <div class="row" v-for="comment in comment_stop" :key="comment._id">
-                <div class="card text-white mb-2 comment bg-danger">
-                    <p class="card-text p-2" v-bind:class="{'retro__stop': show}">{{comment.text}}</p>
+            <transition-group name="slide">
+                <div class="row" v-for="comment in comment_stop" :key="comment._id">
+                    <div class="card text-white mb-2 comment bg-danger">
+                        <p class="card-text p-2" v-bind:class="{'retro__stop': show}">{{comment.text}}</p>
+                    </div>
                 </div>
-            </div>
+            </transition-group>
         </div>
         <div class="col ml-3">
             <span class="retro__continue">Continue</span>
@@ -52,11 +54,13 @@
                 </div>
             </div>
 
-            <div class="row" v-for="comment in comment_continue" :key="comment._id">
-                <div class="card text-white mb-2 comment bg-warning">
-                    <p class="card-text p-2" v-bind:class="{'retro__continue': show}">{{comment.text}}</p>
+            <transition-group name="slide">
+                <div class="row" v-for="comment in comment_continue" :key="comment._id">
+                    <div class="card text-white mb-2 comment bg-warning">
+                        <p class="card-text p-2" v-bind:class="{'retro__continue': show}">{{comment.text}}</p>
+                    </div>
                 </div>
-            </div>
+            </transition-group>
         </div>
     </div>
   </div>
@@ -194,6 +198,48 @@ textarea {
     min-height: 50px;
 
     opacity: 70%;
+}
+
+.slide-enter {
+    opacity: 0;
+}
+
+.slide-enter-active {
+    animation: slide-out 3s ease-out forwards;
+    transition: opacity 1.5s;
+}
+
+.slide-leave {
+
+}
+
+.slide-leave-active {
+    animation: slide-out 3s ease-out forwards;
+    transition: opacity 3s;
+    opacity: 0;
+    position: absolute;
+}
+
+.slide-move {
+    transition: transform 3s;
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateY(100px);
+    }
+    to {
+        transform: translateY(10px);
+    }
+}
+
+@keyframes slide-out {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(100);
+    }
 }
 
 </style>
