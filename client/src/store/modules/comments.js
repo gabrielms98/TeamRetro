@@ -12,11 +12,32 @@ export default {
         comment_start: [],
         comment_stop: [],
         comment_continue: [],
-        show: false
+        show: false,
+        participants: []
+    },
+    mutations: {
+        participantes: (state, user) => {
+            if(state.participants) {
+                state.participants.forEach((p, i) => {
+                    if(p._id === user._id) state.participants[i] = user;
+                });
+            }
+        }
     },
     getters: { 
+        isParticipantActive: (state) => (user) => {
+            state.retro.participants.forEach((p, i) => {
+                p = JSON.parse(p);
+                if(p._id === user.id) {
+                    p.active = user.active;
+                    state.retro.participants[i] = JSON.stringify(p);
+
+                    return user.active;
+                }
+            })
+        },
         getParticipants(state) {
-            return state.retro.participants && state.retro.participants.length && state.retro.participants.map(r => JSON.parse(r));
+            return state.participants && state.participants.length ? state.participants : [];
         }
     },
     actions: { 
@@ -50,7 +71,17 @@ export default {
             feathers.service('comments').on('created', listener);   
         },
 
-        async setRetro({state, commit}, retro_id) {
+        listenUserUpdate({state, commit}) {
+
+            feathers.service('users').off('updated', listener);
+            listener = (user) => {
+                commit('participants', user);
+            }
+            feathers.service('users').on('updated', listener);
+
+        },
+
+        async setRetro({state, getters}, retro_id) {
             const retro = await feathers.service('retros').find({
                 query: {
                     _id: retro_id
@@ -59,6 +90,7 @@ export default {
 
             if(retro.total) {
                 state.retro = retro.data[0];
+                state.participants = state.retro && state.retro.participants.map(p => JSON.parse(p));
             } else {
                 console.log("NAO FOI POSSÍVEL ACHAR RETRO COM ID: " + retro_id);
             }

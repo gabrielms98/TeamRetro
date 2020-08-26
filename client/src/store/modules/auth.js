@@ -1,11 +1,21 @@
 import feathers from '../../feathers';
 
+let listener;
+
 export  default {
     namespaced: true,
     state: {
         loading: false,
         error: '',
         user: null
+    },
+    getters: {
+        isActive: (state) => async (id) => {
+            const user = await feathers.service('users').get(id);
+
+            return user && user.active;
+            
+        }
     },
     actions: {
         async reAuth({ state }) {
@@ -54,6 +64,20 @@ export  default {
             const resp = await feathers.service('users').get(user_id);
             state.loading = false;
             return resp.data;
+        },
+        async setUserActive({state}, active) {
+            state.user.active = active;
+            await feathers.service('users').update(state.user._id, state.user);
+        },
+        async listen({getters}, id) {
+            feathers.service('users').off('updated', listener);
+
+            listener = (users) => {
+                console.log(users.active);
+                if(users._id === id); //return getters.isActive(users._id);
+            }
+
+            feathers.service('users').on('updated', listener);
         }
     }
 }

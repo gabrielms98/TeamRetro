@@ -46,8 +46,6 @@ export default {
                 }
             });
 
-            console.log(retros);
-
             const TOTAL_RETROS = retros.total || 0;
 
             state.pageCount = Math.round(TOTAL_RETROS/5) + 1

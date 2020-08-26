@@ -1,12 +1,12 @@
 <template>
   <div class="retro">
 
-      <div class="row justify-content-between">
-          <div class="col-4 w-100">
-            <ListParticipants />
+      <div class="row ">
+          <div class="col-6 w-100">
+            <ListParticipants style="width: 300px;"/>
           </div>
-          <div class="col-4 w-100">
-            <ControlPanel class="w-100"/>
+          <div class="col-6 w-100">
+            <ControlPanel style="width: 300px;" class="text-right"/>
           </div>
       </div>
 
@@ -20,11 +20,13 @@
                 </div>
             </div>
 
-            <div class="row" v-for="comment in comment_start" :key="comment._id" >
-                <div class="card text-white mb-2 comment bg-success">
-                    <p class="card-text p-2" v-bind:class="{'retro__start': show}">{{comment.text}}</p>
+            <transition-group name="slide">
+                <div class="row" v-for="comment in comment_start" :key="comment._id" >
+                    <div class="card text-white mb-2 comment bg-success">
+                        <p class="card-text p-2" v-bind:class="{'retro__start': show}">{{comment.text}}</p>
+                    </div>
                 </div>
-            </div>
+            </transition-group>
 
         </div>
         <div class="col mr-3 ml-3">
@@ -147,7 +149,7 @@ export default {
 .retro {
   width: 100%;
   height: 100%;
-  background: $bg_dark;
+  background: $azul_camarada;
   color: $primary;
   display: flex;
   align-items: center;
@@ -169,8 +171,8 @@ export default {
 }
 
 textarea { 
-    background-color: $bg_dark;
-    width: 250px;
+    background-color: $azul_camarada;
+    width: 270px;
     height: 50px;
     border: none;
     outline: none !important;
@@ -188,7 +190,7 @@ textarea {
 }
 
 .comment {
-    width: 250px;
+    width: 270px;
     min-height: 50px;
 
     opacity: 70%;

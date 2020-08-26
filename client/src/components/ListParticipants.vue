@@ -1,32 +1,51 @@
 <template>
   <div class="list-participans mb-3">
-      <div >
-          <img v-for="participant in participants" v-bind:key="participant._id" :src="participant.image" alt="Profile pic" class="rounded p-0 shadow-lg mr-2" v-bind:class="{'active': participant.active, 'away': !participant.active}" style="width: 40px;">
+      <div v-for="participant in getParticipants" v-bind:key="participant._id" >
+          <img :src="participant.image" alt="Profile pic" class="rounded p-0 shadow mr-2" style="width: 40px;">
       </div>
   </div>
 </template>
 
 <script>
-import { useState, useActions, useRouter, useGetters } from '@u3u/vue-hooks';
+import { useState, useActions, useRouter, useGetters, useMutations } from '@u3u/vue-hooks';
+import { ref } from '@vue/composition-api';
 export default {
 
     setup() {
-
-        let participants = [];
-
         const { retro } = useState('comments', [
             'retro'
         ]);
 
-        const { getParticipants } = useGetters('comments', [
-            'getParticipants'
+        const { getParticipants, isParticipantActive } = useGetters('comments', [
+            'getParticipants',
+            'isParticipantActive'
         ]);
 
-        participants = getParticipants;
+        const { user } = useState('auth', [
+            'user'
+        ])
+
+        const { isActive } = useGetters('auth', [
+            'isActive'
+        ]);
+
+        const { listenUserUpdate } = useActions('comments', [
+            'listenUserUpdate'
+        ]);
+
+        const { setUserActive, listen } = useActions('auth', [
+            'setUserActive',
+            'listen'
+        ]);
+
+        // listenUserUpdate();
 
         return { 
             retro,
-            participants
+            isActive,
+            getParticipants,
+            isParticipantActive,
+            listen
         };
 
     }
