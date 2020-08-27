@@ -52,7 +52,7 @@ footer{
 }
 
 .row {
-    height: 100px; 
+    height: 130px; 
 }
 
 .footer-copyright {

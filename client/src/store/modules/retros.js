@@ -48,7 +48,7 @@ export default {
 
             const TOTAL_RETROS = retros.total || 0;
 
-            state.pageCount = Math.round(TOTAL_RETROS/5) + 1
+            state.pageCount = (TOTAL_RETROS % 5 === 0 || TOTAL_RETROS < 5) ? Math.round(TOTAL_RETROS/5) : Math.round(TOTAL_RETROS/5) + 1;
             state.retros = retros.data;
             state.loading = false;
         },

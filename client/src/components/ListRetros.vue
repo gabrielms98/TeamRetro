@@ -44,7 +44,7 @@
                                 <small class="form-text text-muted">Digite a senha da retro para entrar! </small>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" @click="join(currentRetro)" class="btn btn-primary">Join</button>
+                                <button type="button" @click="join(currentRetro)" data-dismiss="modal" class="btn btn-primary">Join</button>
                             </div>
                             </div>
                         </div>
