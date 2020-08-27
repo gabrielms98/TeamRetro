@@ -1,16 +1,32 @@
 <template>
   <div class="home">
-    <h2>Team Retro!</h2>
-    <button v-if="!loading && !user" class="btn btn-primary" @click="loginWithGithub()">
-      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-      Login with Github
-    </button>
-    <Loading v-if="loading && !user"></Loading>
-    <pre v-if="user">
-      {{user ? JSON.stringify(user, null, 2) : "No User"}}
-    </pre>
+    <nav class="navbar bg-transparent w-100 justify-content-between px-4 pt-3">
+        <a href="#" class="navbar-brand">
+          <img src="../assets/retromaniac-logo-2D3045.png" width="40">
+        </a>
+    </nav>
 
-    <button v-if="user" class="btn btn-danger" @click="logOut()">Log out</button>
+    <div class="container h-100 mt-5 ml-5">
+      <div class="row w-50 mt-5 title-header ml-2">
+        <h2 class="">Retromaniac</h2>
+        <h5>Lorem Ipsum
+          Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.
+        </h5>
+      </div>
+
+      <div class="row ml-2 mt-5 ">
+          <div>
+            <button class="btn shadow custom-button" @click="loginWithGithub()" v-if="!loading && !user">
+              <span class="d-flex align-items-center">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1 mr-2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                Login with Github
+              </span>
+            </button>
+            <Loading v-if="loading && !user" class="ml-2"></Loading>
+          </div>
+      </div>
+    </div>
+    
   </div>
 </template>
 
@@ -53,18 +69,32 @@ export default {
 @import '../styles/abstracts/_variables.scss';
 
 .home {
-  width: 100%;
+  font-family: 'Alata', sans-serif;
   height: 100%;
-  background: $bg_dark;
-  color: $primary;
+  width: 100%;
+  background-color: $bg_dark;
+
+  background-image: url('../assets/g10home.png');
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  color: #2E3046;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
+.title-header h2{
+  font-size: 60px !important;
+  font-weight: 900;
+  margin-top: 8vh;
+}
 
-button {
+.custom-button {
+  background-color: $azul_camarada;
+  border-radius: 25px;
   padding: 0.5rem 2rem;
   box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.15);
+  font-size: 1.25rem;
+  color: white;
 }
 </style>

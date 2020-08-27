@@ -6,7 +6,7 @@
 export default {}
 </script>
 
-<style>
+<style lang="scss" scoped>
 @import '../styles/abstracts/_variables.scss';
 
 .lds-facebook {
@@ -20,7 +20,7 @@ export default {}
   position: absolute;
   left: 8px;
   width: 16px;
-  background: #7042BD;
+  background: $azul_camarada;
   animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
 }
 .lds-facebook div:nth-child(1) {
