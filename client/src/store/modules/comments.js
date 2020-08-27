@@ -15,7 +15,8 @@ export default {
         comment_stop: [],
         comment_continue: [],
         show: false,
-        participants: []
+        participants: [],
+        timer_started: false
     },
     mutations: {
         updateParticipantActive: (state, user) => {
@@ -61,7 +62,8 @@ export default {
             const comments = await feathers.service('comments').find({
                 query: { 
                     retro_id: state.retro._id,
-                    $sort: { createdAt: 1 }
+                    $sort: { createdAt: 1 },
+                    $limit: 999
                 }
             });
 
@@ -120,10 +122,16 @@ export default {
         },
 
         async showComments({ state }, show ) {
-            console.log("CALLED show comments", show);
             state.show = show;
             let aux = state.retro;
             aux.show = show;
+            await feathers.service('retros').update(aux._id, aux);
+        },
+
+        async updateTimerStatus({state}, status) {
+            if(status === state.timer_started) return;
+            let aux = state.retro;
+            aux.timer_started = state.timer_started = status;
             await feathers.service('retros').update(aux._id, aux);
         }
 

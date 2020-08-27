@@ -36,8 +36,9 @@ export default {
         displayTimer.value = "10:00";
         timer.value = 10 * 60;
 
-        const { showComments } = useActions('comments', [
-            'showComments'
+        const { showComments, updateTimerStatus } = useActions('comments', [
+            'showComments',
+            'updateTimerStatus'
         ]);
 
         watch(show, () => {
@@ -47,17 +48,19 @@ export default {
         function pauseTimer() {
             timer.value = 0;
             clearInterval(interval);
+            updateTimerStatus(false);
         }
 
         function startTimer() {
             if (timer.value > 0) {
-            interval = setInterval(() => {
-                timer.value--;
-                if (timer.value <= 0) {
-                    pauseTimer();
-                }
-                displayTimer.value = fillTimer();
-            }, 1000);
+                updateTimerStatus(true);
+                interval = setInterval(() => {
+                    timer.value--;
+                    if (timer.value <= 0) {
+                        pauseTimer();
+                    }
+                    displayTimer.value = fillTimer();
+                }, 1000);
             }
         }
 

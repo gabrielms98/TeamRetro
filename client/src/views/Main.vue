@@ -1,7 +1,6 @@
 <template>
   <div class=main>
     <ListRetros></ListRetros>
-    <button v-if="user" class="btn btn-danger" @click="logOut()">Log out</button>
   </div>
 </template>
 

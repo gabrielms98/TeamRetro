@@ -16,8 +16,8 @@
               <div class="col-sm-10">
                   <p class="media-body pb-3 mb-0 small lh-125 border-gray">
                         <strong class="d-block text-gray-dark">{{retro.name}}</strong>
-                        <span v-for="user in retro.participants" v-bind:key="user">
-                            {{parse(user)}}
+                        <span v-for="(user, i) in retro.participants" v-bind:key="user">
+                            {{parse(user).split(' ')[0]}}{{i !== retro.participants.length - 1 ? "," : ""}}
                         </span>
                     </p>
               </div>

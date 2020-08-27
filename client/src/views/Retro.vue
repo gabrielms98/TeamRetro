@@ -10,13 +10,13 @@
           </div>
       </div>
 
-    <div class="row">
-        <div class="col mr-3">
+    <div class="row justify-content-between">
+        <div class="col mr-1">
             <span class="retro__start">Start</span>
 
             <div class="row">
                 <div class="card border-success mb-3 input-group">
-                    <textarea  type="text" class="rounded start" v-on:keyup.enter="sendComment(1, commentStart)" v-model="commentStart"></textarea>
+                    <textarea type="text" class="rounded start" v-on:keyup.enter="sendComment(1, commentStart)" v-model="commentStart"></textarea>
                 </div>
             </div>
 
@@ -29,7 +29,7 @@
             </transition-group>
 
         </div>
-        <div class="col mr-3 ml-3">
+        <div class="col ml-1 mr-1">
             <span class="retro__stop">Stop</span>
 
             <div class="row">
@@ -46,7 +46,7 @@
                 </div>
             </transition-group>
         </div>
-        <div class="col ml-3">
+        <div class="col ml-1">
             <span class="retro__continue">Continue</span>
             <div class="row">
                 <div class="card border-warning mb-3 input-group">
@@ -116,6 +116,10 @@ export default {
         listenerRetroUpdate();
 
         const sendComment = (action, comment) => {
+
+            const STRING_LENGTH = 300;
+            if(comment.length > STRING_LENGTH) return;
+
             create({
                 text: comment,
                 retro_id: retro_id,
@@ -159,7 +163,7 @@ export default {
 @import '../styles/abstracts/_variables.scss';
 .retro {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   background: $azul_camarada;
   color: $primary;
   display: flex;
@@ -183,7 +187,7 @@ export default {
 
 textarea { 
     background-color: $azul_camarada;
-    width: 270px;
+    //width: 270px;
     height: 50px;
     border: none;
     outline: none !important;

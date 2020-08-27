@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <Navbar v-if="user" class="shadow"></Navbar>
-    <router-view/>
+    <router-view class="shadow" />
+    <Footer />
   </div>
 </template>
 
@@ -9,11 +10,13 @@
 import { useActions, useState, useRouter } from '@u3u/vue-hooks';
 import { watch } from '@vue/composition-api';
 import Navbar from '@/components/Navbar.vue'
+import Footer from '@/components/Footer.vue';
 
 export default {
 
   components: {
-    Navbar
+    Navbar,
+    Footer
   },
 
   setup() {

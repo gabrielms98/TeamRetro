@@ -11,7 +11,8 @@ module.exports = function (app) {
     admin: {type: String, ref: 'users', required: true},
     participants: [{type: String, ref: 'users'}],
     password: {type: String, required: true},
-    show: {type: Boolean, default: true}
+    show: {type: Boolean, default: true},
+    timer_started: {type: Boolean, default: false} 
   }, {
     timestamps: true
   });
