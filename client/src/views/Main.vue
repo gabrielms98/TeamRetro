@@ -40,7 +40,10 @@ export default {
 .main {
   width: 100%;
   height: 100%;
-  background: $azul_camarada;
+  background: $bg_dark;
+  background-image: url('../assets/Desktop - 2Main.png');
+  background-repeat: no-repeat;
+  background-size: auto;
   color: $primary;
   display: flex;
   //justify-content: center;

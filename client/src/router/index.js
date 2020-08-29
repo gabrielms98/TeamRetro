@@ -6,6 +6,8 @@ import Main from '../views/Main.vue'
 import Retro from '../views/Retro.vue'
 import CreateRetro from '../components/CreateRetro.vue'
 
+import store from '../store';
+
 Vue.use(VueRouter)
 
   const routes = [

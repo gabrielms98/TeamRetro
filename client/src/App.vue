@@ -2,7 +2,7 @@
   <div id="app">
     <Navbar v-if="user" class="shadow"></Navbar>
     <router-view class="shadow" />
-    <Footer v-if="user"/>
+    <!-- <Footer v-if="user"/> -->
   </div>
 </template>
 
