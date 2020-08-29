@@ -8,7 +8,7 @@
 
     <div class="container h-100 mt-5 ml-5">
       <div class="row w-50 mt-5 title-header ml-2">
-        <h2 class="">Retromaniac</h2>
+        <h2 class="titulo">Retromaniac</h2>
         <h5>Lorem Ipsum
           Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.
         </h5>
@@ -69,24 +69,29 @@ export default {
 @import '../styles/abstracts/_variables.scss';
 
 .home {
-  font-family: 'Alata', sans-serif;
+  font-family: 'Roboto', sans-serif;
   height: 100%;
   width: 100%;
   background-color: $bg_dark;
 
   background-image: url('../assets/g10home.png');
   background-repeat: no-repeat;
-  background-size: 100% auto;
+  background-size: 100vw 100vh;
   color: #2E3046;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
+
 .title-header h2{
   font-size: 60px !important;
   font-weight: 900;
   margin-top: 8vh;
+}
+
+.titulo {
+  color: $orange;
 }
 
 .custom-button {
