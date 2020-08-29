@@ -7,7 +7,7 @@
         <Loading />
     </div>
 
-    <div class="my-3 p-3 bg-white rounded" style="width: 50vw;" v-if="!loadingRetro">
+    <div class="my-3 pt-3 pr-3 pl-3 bg-white rounded" style="width: 50vw;" v-if="!loadingRetro">
         <div class="border-bottom border-gray row mx-3 justify-content-between mb-0">
             <h5 class="d-flex align-items-center">Lista de Retros</h5>
             <div>
@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <div class="media container retro__list__item rounded mt-2" v-for="retro in getPage" v-bind:key="retro._id">
+        <div class="media container retro__list__item rounded mt-3" v-for="retro in getPage" v-bind:key="retro._id">
             <div class="row pt-2 pb-2 align-items-center" style="vertical-align: middle;">
                 <div class="col-3 pt-1 pb-1 border-right">
                     <h5 class="mb-0">{{retro.name}}</h5>
@@ -60,20 +60,14 @@
             </div>
         </div>
 
-        
+        <div class="row border-top border-gray mx-3 mt-3 pt-2 pb-2 d-flex justify-content-center ">
+            <button class="btn mt-1 py-0" v-for="number in pageCount" v-bind:key="number" @click="goToPage(number)">
+                <h4 class="current-page px-2 rounded-circle">{{number}}</h4>
+            </button>
+        </div>
+
     </div>
 
-    <nav aria-label="...">
-        <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <button class="page-link" href="#" tabindex="-1">Previous</button>
-            </li>
-            <li class="page-item" v-for="i in pageCount" v-bind:key="i"><button class="page-link " @click="goToPage(i)">{{i}}</button></li>
-            <li class="page-item">
-                <button class="page-link">Next</button>
-            </li>
-        </ul>
-    </nav>
   </div>
 </template>
 

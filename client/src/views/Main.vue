@@ -43,6 +43,7 @@ export default {
   background: $bg_dark;
   background-image: url('../assets/Desktop - 2Main.png');
   background-repeat: no-repeat;
+  background-position: center center;
   background-size: auto;
   color: $primary;
   display: flex;

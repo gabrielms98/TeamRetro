@@ -1,7 +1,10 @@
 <template>
   <div class="list-participans mb-3">
         <span v-for="(participant, index) in getParticipants" :id="`getParticipants${participant._id}`" v-bind:key="participant._id">
-            <img :src="participant.image" alt="Profile pic" class="rounded p-0 shadow mr-2" style="width: 40px;" v-bind:class="{'active': getParticipants[index].active, 'away': !getParticipants[index].active}">
+            <img :src="participant.image" alt="Profile pic" class="rounded p-0 shadow m-2" style="width: 40px;" v-bind:class="{'active': getParticipants[index].active, 'away': !getParticipants[index].active}">
+            <img :src="participant.image" alt="Profile pic" class="rounded p-0 shadow m-2" style="width: 40px;" v-bind:class="{'active': getParticipants[index].active, 'away': !getParticipants[index].active}">
+            <img :src="participant.image" alt="Profile pic" class="rounded p-0 shadow m-2" style="width: 40px;" v-bind:class="{'active': getParticipants[index].active, 'away': !getParticipants[index].active}">
+            <img :src="participant.image" alt="Profile pic" class="rounded p-0 shadow m-2" style="width: 40px;" v-bind:class="{'active': getParticipants[index].active, 'away': !getParticipants[index].active}">
         </span>
   </div>
 </template>
@@ -93,7 +96,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '../styles/abstracts/_variables.scss';
-
 .active {
     border: 2px solid $success;
 }

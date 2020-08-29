@@ -1,69 +1,77 @@
 <template>
-  <div class="retro">
+    <div class="retro">
 
-      <div class="row ">
-          <div class="col-6 w-100">
-            <ListParticipants style="width: 300px;"/>
-          </div>
-          <div class="col-6 w-100">
-            <ControlPanel style="width: 300px;" class="text-right"/>
-          </div>
-      </div>
-
-    <div class="row justify-content-between">
-        <div class="col mr-1">
-            <span class="retro__start">Start</span>
-
-            <div class="row">
-                <div class="card border-success mb-3 input-group">
-                    <textarea type="text" class="rounded start" v-on:keyup.enter="sendComment(1, commentStart)" v-model="commentStart"></textarea>
+        <div class="row mt-2 container d-flex justify-content-center align-items-center mb-3">
+            <div class="col-3 text-center">
+                <ListParticipants />
+            </div>
+            <div class="col-3 text-center">
+                <div style="font-size: 60px;" class="p-0">{{displayTimer}}</div>
+                <div class="m-0">
+                    <button class="btn" @click="startTimer(); play = !play">
+                        <svg v-if="play" viewBox="0 0 24 24" width="24" height="24" stroke="#615E61" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        <svg v-else viewBox="0 0 24 24" width="24" height="24" stroke="#615E61" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                    </button>
                 </div>
             </div>
-
-            <transition-group name="slide">
-                <div class="row" v-for="comment in comment_start" :key="comment._id" >
-                    <div class="card text-white mb-2 comment bg-success">
-                        <p class="card-text p-2" v-bind:class="{'retro__start': retro.show}">{{comment.text}}</p>
-                    </div>
-                </div>
-            </transition-group>
-
+            <div class="col-3 text-center">
+                <h3>ola</h3>
+            </div>
         </div>
-        <div class="col ml-1 mr-1">
-            <span class="retro__stop">Stop</span>
 
-            <div class="row">
-                <div class="card border-danger mb-3 input-group">
-                    <textarea type="text" class="rounded stop" v-on:keyup.enter="sendComment(2, commentStop)" v-model="commentStop"></textarea>
+        <div class="row justify-content-between">
+            <div class="col mr-2">
+                
+                <div class="row mb-3 input-group">
+                    <textarea cols="35" rows="3" class="start rounded" @keyup.enter="sendComment(1, commentStart)" v-model="commentStart"></textarea>
                 </div>
+
+                <!-- <transition-group name="slide"> -->
+                    <div class="row" v-for="comment in comment_start" :key="comment._id">
+                        <div class="card rounded comment comment__start p-2 text-white shadow mb-2">
+                            <p class="card-text text-white">
+                                {{comment.text}}
+                            </p>
+                        </div>
+                    </div>
+                <!-- </transition-group> -->
             </div>
 
-            <transition-group name="slide">
-                <div class="row" v-for="comment in comment_stop" :key="comment._id">
-                    <div class="card text-white mb-2 comment bg-danger">
-                        <p class="card-text p-2" v-bind:class="{'retro__stop': retro.show}">{{comment.text}}</p>
+            <div class="col mr-2">
+                <div class="row mb-3 input-group">
+                    <textarea cols="35" rows="3" class="continue rounded" @keyup.enter="sendComment(2, commentContinue)" v-model="commentContinue"></textarea>
+                </div>
+                <!-- <transition-group name="slide"> -->
+                    <div class="row" v-for="comment in comment_continue" :key="comment._id">
+                        <div class="card rounded comment comment__continue p-2 text-white shadow mb-2">
+                            <p class="card-text text-white">
+                                {{comment.text}}
+                            </p>
+                        </div>
                     </div>
+                <!-- </transition-group> -->
+            </div>
+            <div class="col mr-2">
+                <div class="row mb-3 input-group">
+                    <textarea cols="35" rows="3" class="stop rounded" @keyup.enter="sendComment(3, commentStop)" v-model="commentStop"></textarea>
                 </div>
-            </transition-group>
-        </div>
-        <div class="col ml-1">
-            <span class="retro__continue">Continue</span>
-            <div class="row">
-                <div class="card border-warning mb-3 input-group">
-                    <textarea type="text" class="rounded continue" v-on:keyup.enter="sendComment(3, commentContinue)" v-model="commentContinue"></textarea>
-                </div>
+                <!-- <transition-group name="slide"> -->
+                    <div class="row" v-for="comment in comment_stop" :key="comment._id">
+                        <div class="card rounded comment comment__stop p-2 text-white shadow mb-2">
+                            <p class="card-text text-white">
+                                {{comment.text}}
+                            </p>
+                        </div>
+                    </div>
+                <!-- </transition-group> -->
             </div>
 
-            <transition-group name="slide">
-                <div class="row" v-for="comment in comment_continue" :key="comment._id">
-                    <div class="card text-white mb-2 comment bg-warning">
-                        <p class="card-text p-2" v-bind:class="{'retro__continue': retro.show}">{{comment.text}}</p>
-                    </div>
-                </div>
-            </transition-group>
         </div>
+        
+
     </div>
-  </div>
+
+
 </template>
 
 <script>
@@ -81,10 +89,18 @@ export default {
     },
 
     setup() {
+
+        let timer = 10 * 60;
+        let displayTimer = ref('');
+        let play = ref('');
+        let interval;
+
+        displayTimer.value = "10:00";
+        play.value = true;
+
         const { router, route } = useRouter();
 
         const { retro_id } = route.value.query;
-        console.log("params", retro_id);
 
         const commentStart = ref('');
         const commentStop = ref('');
@@ -131,15 +147,51 @@ export default {
             commentContinue.value = '';
         };
 
+        function pauseTimer() {
+            play.value = false;
+            timer = 0;
+            clearInterval(interval);
+            //updateTimerStatus(false);
+        }
+
+        function startTimer() {
+            console.log("OLAAA");
+            play.value = true;
+            if (timer > 0) {
+                //updateTimerStatus(true);
+                interval = setInterval(() => {
+                    timer--;
+                    if (timer <= 0) {
+                        pauseTimer();
+                    }
+                    displayTimer.value = fillTimer();
+                }, 1000);
+            }
+        }
+
+        function getSpace(numberSpace) {
+            let space = '';
+            for (let i = 0; i < numberSpace; i++) { space += ' '; }
+            return space;
+        }
+
+        function fillTimer() {
+            if (timer === 0) {
+                return 'Time is up!';
+            }
+
+            const minutes = Math.floor(timer / 60).toString();
+            let seconds = (timer % 60).toString();
+            seconds = seconds.length === 2 ? seconds : '0' + seconds;
+
+            return getSpace(5) + minutes + ':' + seconds + getSpace(5);
+
+        }
+
         watch(user, () => {
             if(!user.value) {
                 router.push('/');
             }
-        })
-
-        watch(show, () => {
-
-            console.log("aoooooba");
         })
 
         return { 
@@ -152,7 +204,10 @@ export default {
             comment_stop,
             comment_continue,
             show,
-            retro
+            retro,
+            displayTimer,
+            play,
+            startTimer
         };
     }
 
@@ -160,11 +215,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/abstracts/_variables.scss';
+@import '../styles/main.scss';
 .retro {
   width: 100%;
   min-height: 100%;
-  background: $azul_camarada;
+  background: $bg_dark;
+  background-image: url('../assets/Desktop - 3Retro.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100vw;
   color: $primary;
   display: flex;
   align-items: center;
@@ -184,31 +243,42 @@ export default {
         color: $warning;
     }
 }
-
-textarea { 
-    background-color: $azul_camarada;
-    //width: 270px;
-    height: 50px;
+textarea {
+    outline: none;
     border: none;
-    outline: none !important;
-    box-shadow: none;
-
-    &.continue:focus {
-        color: $warning;
+    padding: 5px;
+    &.start {
+        background: rgba(29, 167, 77, 0.70);
+        border: 1px solid $success;
     }
-    &.start:focus {
-        color: $success;
+    &.continue {
+        background: rgba(255, 192, 45, 0.70);
+        border: 1px solid $warning;
     }
-    &.stop:focus {
-        color: $danger;
+    &.stop {
+        background: rgba(223, 53, 68, 0.70);
+        border: 1px solid $danger;
     }
 }
 
 .comment {
-    width: 270px;
+    width: 310px;
     min-height: 50px;
 
-    opacity: 70%;
+    outline: none;
+    border: none;
+
+    &__start {
+        background: $success;
+    }
+    &__continue {
+        background: $warning;
+    }
+    &__stop {
+        background: $danger;
+    }
+
+
 }
 
 .slide-enter {
